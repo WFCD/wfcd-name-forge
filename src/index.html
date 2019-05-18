@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Warframe Name Generator</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet"
+      href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+      media="screen,projection"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <style>
+      textarea.materialize-textarea:disabled,
+        .input-field.col .prefix ~ label,
+        .input-field.col .prefix ~ .validate ~ label {
+          color: rgba(255,255,255,0.5);
+      }
+      textarea.materialize-textarea:disabled {
+        border-bottom: 1px dotted rgba(255,255,255,0.5);
+      }
+      .input-field {
+        width: 100%;
+      }
+      #name-gen-container {
+        padding-top: 20vh;
+      }
+      .select-wrapper .caret.light-caret {
+        fill: #e0f7fa;
+        z-index: 1;
+      }
+      
+      /* Using frameless toolbar from https://github.com/binaryfunt/electron-seamless-titlebar-tutorial */
+      #titlebar {
+        display: block;
+        position: fixed;
+        height: 32px;
+        width: calc(100% - 2px); /*Compensate for body 1px border*/
+        background-color: #202225;
+      }
+      #drag-region  {
+        -webkit-app-region: drag;
+        width: 100%;
+        height: 100%;
+      }
+      #titlebar #drag-region {
+        display: grid;
+        grid-template-columns: auto 138px;
+      }
+      #window-controls {
+        display: grid;
+        grid-template-columns: repeat(3, 46px);
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+      }
+      #window-controls .button {
+        grid-row: 1 / span 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 46px;
+        height: 32px;
+        user-select: none;
+        cursor: default;
+        color: #BBB;
+        z-index: 10;
+      }
+      
+      #window-controls .button div {
+        pointer-events: none;
+        z-index: -1;
+      }
+      
+      #window-controls #min-button {
+        grid-column: 1;
+      }
+      #window-controls #max-button, #window-controls #restore-button {
+        grid-column: 2;
+      }
+      #window-controls #close-button {
+        grid-column: 3;
+      }
+      
+      label {
+        z-index: 1;
+      }
+
+      #window-controls .button:hover {
+        background: rgba(255,255,255,0.2);
+        color: #FFF;
+      }
+      #window-controls #close-button:hover {
+        background: #E81123;
+      }
+      #window-controls #restore-button {
+        display: none;
+      }
+      #window-title {
+        grid-column: 1;
+        display: flex;
+        align-items: center;
+        font-family: "Roboto", sans-serif;
+        font-size: 12px;
+        margin-left: 8px;
+        margin-top: 8px;
+        overflow-x: hidden;
+      }
+      #window-title span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.5;
+      }
+      .title-logo {
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body class="blue-grey darken-4 cyan-text text-lighten-5">
+    <header id="titlebar">
+      <div id="drag-region">
+        <div id="window-title" class="center-align">
+          <img class="title-logo" src="./resources/logo_color.png" height="28px" width="28px"></img>
+          <span class="title-label">Warframe Name Generator</span>
+        </div>
+        <div id="window-controls">
+          <div class="button" id="min-button">
+            <div><i class="material-icons center tiny">minimize</i></div>
+          </div>
+          <div class="button" id="max-button">
+            <div><i class="material-icons center tiny">maximize</i></div>
+          </div>
+          <div class="button" id="restore-button">
+            <div><i class="material-icons center tiny">maximize</i></div>
+          </div>
+          <div class="button" id="close-button">
+            <div><i class="material-icons center tiny">close</i></div>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <div id="name-gen-container" class="container">
+      <div class="row">
+        <form class="col s12" id="name-generator">
+          <div class="row"> <!-- Race Picker -->
+            <div class="input-field col s4 offset-s2 center-align">
+             <select id="race-picker">
+               <option value="random" selected>Random</option>
+               <option value="corpus">Corpus</option>
+               <option value="grineer">Grineer</option>
+               <option value="orokin">Orokin</option>
+               <option value="sentient">Sentient</option>
+               <option value="tenno">Tenno</option>
+               <option value="infested">Infested</option>
+             </select>
+             <label>Select a Race</label>
+           </div>
+           <div class="input-field col s4 center-align"> <!-- Type Picker -->
+            <select id="type-picker" class="blue-grey darken-4 cyan-text text-lighten-5">
+              <option value="random" selected>Random</option>
+              <option value="names">Names</option>
+              <option value="places">Places</option>
+              <option value="titles">Titles</option>
+            </select>
+            <label>Select a Thing to Name</label>
+          </div>
+          </div>
+          <div class="row"> <!-- Race Show-->
+            <div class="col s4 offset-s2 center-align">
+              Show Race
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" id="show-race-check">
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+            <div class="col s4 center-align"> <!-- Adjective? -->
+              Show Adjective
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" checked id="show-adj-check">
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row"> <!-- Nouns # -->
+            <div class="col s4 offset-s4 center-align">
+              Number of Nouns to Show
+              <form action="#">
+                <p class="range-field">
+                  <input type="range" id="noun-amt" min="1" max="5" value="1" />
+                </p>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12 center-align">
+              <button form="name-generator" class="btn waves-effect waves-light" type="button" onClick="generateName()">Generate
+                <i class="material-icons right">cached</i>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s4 offset-s4 center-align" >
+              <i class="material-icons prefix">text_format</i>
+              <textarea id="name-result" class="materialize-textarea cyan-text text-lighten-5"></textarea>
+              <label id="name-result-label" for="name-result">Generated Name</label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer">
+      <a class="btn tooltipped right" target="_blank" data-position="top" data-tooltip="Our Discord" href="https://discord.gg/jGZxH9f" rel="noopener"><i class="fab fa-discord"></i></a>
+      <a class="btn tooltipped right" target="_blank" data-position="top" data-tooltip="Our GitHub" href="https://github.com/wfcd/" rel="noopener"><i class="fab fa-github"></i></a>
+    </div>
+    <script type="text/javascript" src="renderer.js"></script>
+  </body>
+</html>

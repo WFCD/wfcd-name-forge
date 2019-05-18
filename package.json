@@ -1,0 +1,69 @@
+{
+  "name": "wfcd-name-forge",
+  "productName": "Warframe Name Generator",
+  "version": "1.0.0",
+  "description": "A simple Electron app to make Warframe names",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npx electron-forge start",
+    "package": "npx electron-forge package",
+    "make": "npx electron-forge make",
+    "publish": "npx electron-forge publish",
+    "lint": "npx eslint src --color"
+  },
+  "keywords": [],
+  "author": "TobiTenno",
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "executableName": "Warframe Name Generator",
+        "icon": "./src/resources/win/logo.ico"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "wfcd-name-generator",
+            "exe": "Warframe Name Generator.exe",
+            "loadingGif": "./src/resources/logo_color.png",
+            "setupIcon": "./src/resources/win/logo.ico"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.8.2",
+    "electron-squirrel-startup": "^1.0.0",
+    "materialize-css": "^1.0.0-rc.2",
+    "warframe-name-generator": "^1.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.33",
+    "@electron-forge/maker-deb": "^6.0.0-beta.33",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.33",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.33",
+    "@electron-forge/maker-zip": "^6.0.0-beta.33",
+    "electron": "5.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.13.0"
+  }
+}
