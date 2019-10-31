@@ -1,32 +1,23 @@
+'use strict';
+
+/* globals document, M  */
+/* eslint-disable no-unused-vars */
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
 const {
-  Generator
+  Generator,
 } = require('warframe-name-generator');
 require('materialize-css');
 
-/* Open external stuff */
-/**
- * Open an external link
- * @param  {HTMLElement} elem DOM anchor calling 
- * @return {undefined}      doesn't return
- */
-const openB = (elem) => {
-  require("electron").shell.openExternal(elem.getAttribute('data-href'));
-}
-
 /* Generate names */
 const generator = new Generator();
-
 const getSelectValue = (formId) => {
-  return M.FormSelect.getInstance(document.getElementById(formId)).input.value.toLowerCase();
+  const form = document.getElementById(formId);
+  return M.FormSelect.getInstance(form).input.value.toLowerCase();
 };
-
-const getSwitchValue = (formId) => {
-  return document.getElementById(formId).checked;
-};
+const getSwitchValue = (formId) => document.getElementById(formId).checked;
 
 const generateName = () => {
   const opts = {
@@ -36,95 +27,62 @@ const generateName = () => {
     type: getSelectValue('type-picker'),
     nouns: Number.parseInt(document.getElementById('noun-amt').value, 10),
   };
-
-  console.debug(opts);
   const val = generator.make(opts);
   document.getElementById('name-result').value = val;
 
   // update values maually???
   M.updateTextFields();
   M.textareaAutoResize(document.getElementById('name-result'));
-}
+};
 
 /* Init Materialize styles and special stuff */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   M.FormSelect.init(document.querySelectorAll('select'), {
-    classes: 'blue-grey darken-4 cyan-text text-lighten-5'
+    classes: 'blue-grey darken-4 cyan-text text-lighten-5',
   });
-  
-  M.Tooltip.init(document.querySelectorAll('.tooltipped'));
-  
-  const dropdowns = document.getElementsByClassName('select-dropdown');
-  for (let i = 0; i < dropdowns.length; i++) {
-    dropdowns[i].classList.add('blue-grey');
-    dropdowns[i].classList.add('darken-4');
-    dropdowns[i].classList.add('cyan-text');
-    dropdowns[i].classList.add('text-lighten-5');
-  }
 
-  const carets = document.getElementsByClassName('caret');
-  for (let i = 0; i < carets.length; i++) {
-    carets[i].classList.add('light-caret');
-  }
+  M.Tooltip.init(document.querySelectorAll('.tooltipped'));
+
+  Array
+    .from(document.getElementsByClassName('select-dropdown'))
+    .forEach((dropdown) => {
+      dropdown.classList.add('blue-grey');
+      dropdown.classList.add('darken-4');
+      dropdown.classList.add('cyan-text');
+      dropdown.classList.add('text-lighten-5');
+    });
+
+  Array
+    .from(document.getElementsByClassName('caret'))
+    .forEach((caret) => {
+      caret.classList.add('light-caret');
+    });
 });
 
+function init() {
+  // eslint-disable-next-line global-require
+  const { remote } = require('electron');
+  const minButton = document.getElementById('min-button');
+  const maxButton = document.getElementById('max-button');
+  const restoreButton = document.getElementById('restore-button');
+  const closeButton = document.getElementById('close-button');
 
-/* Electron seamless titlebar */
-const remote = require('electron').remote;
-
-(function handleWindowControls() {
-  // When document has loaded, initialise
-  document.onreadystatechange = () => {
-    if (document.readyState == "complete") {
-      init();
-    }
+  let window = remote.getCurrentWindow();
+  const minimize = () => {
+    window = remote.getCurrentWindow();
+    window.minimize();
+  };
+  const close = (event) => {
+    window = remote.getCurrentWindow();
+    window.close();
   };
 
-  function init() {
-    let window = remote.getCurrentWindow();
-    const minButton = document.getElementById('min-button'),
-      maxButton = document.getElementById('max-button'),
-      restoreButton = document.getElementById('restore-button'),
-      closeButton = document.getElementById('close-button');
+  minButton.addEventListener('click', minimize);
+  closeButton.addEventListener('click', close);
+}
 
-    minButton.addEventListener("click", event => {
-      window = remote.getCurrentWindow();
-      window.minimize();
-    });
-
-    maxButton.addEventListener("click", event => {
-      window = remote.getCurrentWindow();
-      window.maximize();
-      toggleMaxRestoreButtons();
-    });
-
-    restoreButton.addEventListener("click", event => {
-      window = remote.getCurrentWindow();
-      window.unmaximize();
-      toggleMaxRestoreButtons();
-    });
-
-    // Toggle maximise/restore buttons when maximisation/unmaximisation
-    // occurs by means other than button clicks e.g. double-clicking
-    // the title bar:
-    toggleMaxRestoreButtons();
-    window.on('maximize', toggleMaxRestoreButtons);
-    window.on('unmaximize', toggleMaxRestoreButtons);
-
-    closeButton.addEventListener("click", event => {
-      window = remote.getCurrentWindow();
-      window.close();
-    });
-
-    function toggleMaxRestoreButtons() {
-      window = remote.getCurrentWindow();
-      if (window.isMaximized()) {
-        maxButton.style.display = "none";
-        restoreButton.style.display = "flex";
-      } else {
-        restoreButton.style.display = "none";
-        maxButton.style.display = "flex";
-      }
-    }
+document.onreadystatechange = () => {
+  if (document.readyState === 'complete') {
+    init();
   }
-})();
+};

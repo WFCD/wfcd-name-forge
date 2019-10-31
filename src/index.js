@@ -1,6 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+'use strict';
 
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+const { app, BrowserWindow, shell } = require('electron');
+
+// eslint-disable-next-line global-require
+if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
@@ -10,11 +13,16 @@ const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 535,
+    minWidth: 800,
+    minHeight: 535,
     frame: false,
+    resizable: false,
+    titleBarStyle: 'customButtonsOnHover',
     webPreferences: {
       nodeIntegration: true,
       enableBlinkFeatures: 'OverlayScrollbars',
+      devTools: true,
     },
   });
 
@@ -22,32 +30,25 @@ const createWindow = () => {
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools('undocked');
 
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-  
-  mainWindow.webContents.on('new-window', function(e, url) {
+  mainWindow.webContents.on('new-window', (e, url) => {
     e.preventDefault();
-    require('electron').shell.openExternal(url);
+    shell.openExternal(url);
   });
-  
   mainWindow.setMenu(null);
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
-
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
-
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();

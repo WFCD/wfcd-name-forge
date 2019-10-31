@@ -9,7 +9,8 @@
     "package": "npx electron-forge package",
     "make": "npx electron-forge make",
     "publish": "npx electron-forge publish",
-    "lint": "npx eslint src --color"
+    "lint": "npx eslint src --color",
+    "lint:fix": "npx eslint src --color --fix"
   },
   "keywords": [],
   "author": "TobiTenno",
@@ -48,22 +49,20 @@
     }
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.8.2",
+    "@fortawesome/fontawesome-free": "^5.11.2",
+    "electron": "^7.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "materialize-css": "^1.0.0-rc.2",
-    "warframe-name-generator": "^1.0.0"
+    "warframe-name-generator": "^1.0.2"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.33",
-    "@electron-forge/maker-deb": "^6.0.0-beta.33",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.33",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.33",
-    "@electron-forge/maker-zip": "^6.0.0-beta.33",
-    "electron": "5.0.1",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.13.0"
+    "@electron-forge/cli": "^6.0.0-beta.45",
+    "@electron-forge/maker-deb": "^6.0.0-beta.45",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.45",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.45",
+    "@electron-forge/maker-zip": "^6.0.0-beta.45",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
   }
 }
