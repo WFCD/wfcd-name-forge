@@ -99,7 +99,10 @@
         margin-right: 10px;
       }
       
-      /* Footer positioning */
+      /* Field adjustments */
+      #name-result, #name-result-label {
+        text-align: center;
+      }
     </style>
   </head>
   <body class="blue-grey darken-4 cyan-text text-lighten-5">
@@ -112,12 +115,6 @@
         <div class="button" id="min-button">
           <div><i class="material-icons center">minimize</i></div>
         </div>
-        <!-- <div class="button" id="max-button">
-          <div><i class="material-icons center">maximize</i></div>
-        </div>
-        <div class="button" id="restore-button">
-          <div><i class="material-icons center">maximize</i></div>
-        </div> -->
         <div class="button" id="close-button">
           <div><i class="material-icons center">close</i></div>
         </div>
@@ -192,9 +189,8 @@
             </div>
           </div>
           <div class="row">
-            <div class="input-field col s4 offset-s4 center-align" >
-              <i class="material-icons prefix">text_format</i>
-              <textarea id="name-result" class="materialize-textarea cyan-text text-lighten-5"></textarea>
+            <div class="input-field col s12 center-align" >
+              <textarea id="name-result" class="materialize-textarea cyan-text text-lighten-5" readonly></textarea>
               <label id="name-result-label" for="name-result">Generated Name</label>
             </div>
           </div>
