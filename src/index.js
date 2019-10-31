@@ -1,5 +1,6 @@
 'use strict';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { app, BrowserWindow, shell } = require('electron');
 
 // eslint-disable-next-line global-require

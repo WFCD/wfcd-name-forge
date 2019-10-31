@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function init() {
-  // eslint-disable-next-line global-require
+  // eslint-disable-next-line global-require, import/no-extraneous-dependencies
   const { remote } = require('electron');
   const minButton = document.getElementById('min-button');
   const maxButton = document.getElementById('max-button');

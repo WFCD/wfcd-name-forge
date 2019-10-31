@@ -50,7 +50,6 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
-    "electron": "^7.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "materialize-css": "^1.0.0-rc.2",
     "warframe-name-generator": "^1.0.2"
@@ -61,6 +60,7 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.45",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.45",
     "@electron-forge/maker-zip": "^6.0.0-beta.45",
+    "electron": "^7.0.0",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
