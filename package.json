@@ -49,7 +49,7 @@
     }
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "electron-squirrel-startup": "^1.0.0",
     "materialize-css": "^1.0.0-rc.2",
     "warframe-name-generator": "^1.0.2"
