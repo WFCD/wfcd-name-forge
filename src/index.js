@@ -1,5 +1,3 @@
-'use strict';
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { app, BrowserWindow, shell } = require('electron');
 
@@ -8,6 +6,10 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+const remote = require('@electron/remote/main');
+
+remote.initialize();
+
 let mainWindow;
 
 const createWindow = () => {
@@ -15,8 +17,6 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 535,
-    minWidth: 800,
-    minHeight: 535,
     frame: false,
     resizable: false,
     titleBarStyle: 'customButtonsOnHover',
@@ -24,20 +24,21 @@ const createWindow = () => {
       nodeIntegration: true,
       enableBlinkFeatures: 'OverlayScrollbars',
       devTools: true,
+      contextIsolation: false,
     },
   });
+  remote.enable(mainWindow.webContents);
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
+  mainWindow.loadFile('src/index.html');
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools('undocked');
+  // mainWindow.webContents.openDevTools({ mode: 'undocked' });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-  mainWindow.webContents.on('new-window', (e, url) => {
-    e.preventDefault();
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
   });
   mainWindow.setMenu(null);

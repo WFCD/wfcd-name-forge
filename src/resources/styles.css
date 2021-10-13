@@ -1,0 +1,90 @@
+html {
+    height: 100%;
+}
+
+textarea.materialize-textarea:disabled,
+.input-field.col .prefix ~ label,
+.input-field.col .prefix ~ .validate ~ label {
+    color: rgba(255,255,255,0.5);
+}
+textarea.materialize-textarea:disabled {
+    border-bottom: 1px dotted rgba(255,255,255,0.5);
+}
+.input-field {
+    width: 100%;
+}
+#name-gen-container {
+    padding-top: 10vh;
+}
+.select-wrapper .caret.light-caret {
+    fill: #e0f7fa;
+    z-index: 1;
+}
+
+/* Using frameless toolbar from https://github.com/binaryfunt/electron-seamless-titlebar-tutorial */
+#drag-region  {
+    -webkit-app-region: drag;
+    position: fixed;
+    height: 32px;
+    width: calc(100% - 2px); /*Compensate for body 1px border*/
+    background-color: #202225;
+    display: grid;
+    grid-template-columns: auto 138px;
+}
+#window-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 46px);
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+#window-controls i {
+    z-index: -1;
+}
+#window-controls .button {
+    grid-row: 1 / span 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 46px;
+    height: 32px;
+    cursor: pointer;
+    color: #BBB;
+    -webkit-app-region: no-drag;
+}
+#window-controls #min-button {
+    grid-column: 2;
+}
+#window-controls #close-button {
+    grid-column: 3;
+}
+#window-controls .button:hover {
+    background: rgba(255,255,255,0.2);
+    color: #FFF;
+}
+#window-controls #close-button:hover {
+    background: #E81123;
+}
+#window-title {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    margin-left: 8px;
+    overflow-x: hidden;
+}
+#window-title span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+}
+.title-logo {
+    margin-right: 10px;
+}
+
+/* Field adjustments */
+#name-result, #name-result-label {
+    text-align: center;
+}

@@ -1,5 +1,3 @@
-'use strict';
-
 /* globals document, M  */
 /* eslint-disable no-unused-vars */
 // This file is required by the index.html file and will
@@ -10,6 +8,8 @@ const {
   Generator,
 } = require('warframe-name-generator');
 require('materialize-css');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const remote = require('@electron/remote');
 
 /* Generate names */
 const generator = new Generator();
@@ -27,10 +27,9 @@ const generateName = () => {
     type: getSelectValue('type-picker'),
     nouns: Number.parseInt(document.getElementById('noun-amt').value, 10),
   };
-  const val = generator.make(opts);
-  document.getElementById('name-result').value = val;
+  document.getElementById('name-result').value = generator.make(opts);
 
-  // update values maually???
+  // update values manually???
   M.updateTextFields();
   M.textareaAutoResize(document.getElementById('name-result'));
 };
@@ -61,20 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function init() {
   // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-  const { remote } = require('electron');
   const minButton = document.getElementById('min-button');
   const maxButton = document.getElementById('max-button');
   const restoreButton = document.getElementById('restore-button');
   const closeButton = document.getElementById('close-button');
 
-  let window = remote.getCurrentWindow();
   const minimize = () => {
-    window = remote.getCurrentWindow();
-    window.minimize();
+    remote.getCurrentWindow().minimize();
   };
   const close = (event) => {
-    window = remote.getCurrentWindow();
-    window.close();
+    remote.getCurrentWindow().close();
   };
 
   minButton.addEventListener('click', minimize);
