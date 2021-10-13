@@ -88,3 +88,8 @@ textarea.materialize-textarea:disabled {
 #name-result, #name-result-label {
     text-align: center;
 }
+
+/* Brand button styling */
+.brand-btn {
+    color: white;
+}
