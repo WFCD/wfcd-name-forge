@@ -93,3 +93,11 @@ textarea.materialize-textarea:disabled {
 .brand-btn {
     color: white;
 }
+
+/* hide scrollbars */
+::-webkit-scrollbar {
+    display: none;
+}
+body {
+    scrollbar-width: none;
+}
