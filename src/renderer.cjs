@@ -1,25 +1,20 @@
-/* globals document, M  */
-/* eslint-disable no-unused-vars */
+/* globals M */
+'use strict';
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-const {
-  Generator,
-} = require('warframe-name-generator');
+const { ipcRenderer } = require('electron');
 require('materialize-css');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const remote = require('@electron/remote');
 
-/* Generate names */
-const generator = new Generator();
 const getSelectValue = (formId) => {
   const form = document.getElementById(formId);
   return M.FormSelect.getInstance(form).input.value.toLowerCase();
 };
 const getSwitchValue = (formId) => document.getElementById(formId).checked;
 
-const generateName = () => {
+const generateName = async () => {
   const opts = {
     adjective: getSwitchValue('show-adj-check'),
     includeRace: getSwitchValue('show-race-check'),
@@ -27,15 +22,14 @@ const generateName = () => {
     type: getSelectValue('type-picker'),
     nouns: Number.parseInt(document.getElementById('noun-amt').value, 10),
   };
-  document.getElementById('name-result').value = generator.make(opts);
+  document.getElementById('name-result').value = await ipcRenderer.invoke('generate-name', opts);
 
   // update values manually???
   M.updateTextFields();
   M.textareaAutoResize(document.getElementById('name-result'));
 };
 
-/* Init Materialize styles and special stuff */
-document.addEventListener('DOMContentLoaded', () => {
+const initUi = () => {
   M.FormSelect.init(document.querySelectorAll('select'), {
     classes: 'blue-grey darken-4 cyan-text text-lighten-5',
   });
@@ -56,28 +50,22 @@ document.addEventListener('DOMContentLoaded', () => {
     .forEach((caret) => {
       caret.classList.add('light-caret');
     });
-});
 
-function init() {
-  // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+  document.getElementById('generate-name-btn').addEventListener('click', generateName);
+
   const minButton = document.getElementById('min-button');
-  const maxButton = document.getElementById('max-button');
-  const restoreButton = document.getElementById('restore-button');
   const closeButton = document.getElementById('close-button');
 
-  const minimize = () => {
+  minButton.addEventListener('click', () => {
     remote.getCurrentWindow().minimize();
-  };
-  const close = (event) => {
+  });
+  closeButton.addEventListener('click', () => {
     remote.getCurrentWindow().close();
-  };
-
-  minButton.addEventListener('click', minimize);
-  closeButton.addEventListener('click', close);
-}
-
-document.onreadystatechange = () => {
-  if (document.readyState === 'complete') {
-    init();
-  }
+  });
 };
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initUi);
+} else {
+  initUi();
+}
