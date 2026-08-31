@@ -1,0 +1,4 @@
+'*.{js,cjs,mjs}':
+  - eslint --config .config/eslint.config.mjs --cache --fix
+'package*.json':
+  - npm dedupe

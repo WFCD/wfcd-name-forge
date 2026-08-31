@@ -4,7 +4,25 @@ import { importX } from 'eslint-plugin-import-x';
 import jsdoc from 'eslint-plugin-jsdoc';
 import globals from 'globals';
 
+const sharedRules = {
+  'jsdoc/require-returns': 'off',
+  'jsdoc/require-returns-description': 'off',
+  'jsdoc/require-param-description': 'off',
+  'jsdoc/require-jsdoc': 'off',
+  'strict': ['error', 'safe'],
+  '@stylistic/linebreak-style': 'off',
+  'no-restricted-syntax': 'off',
+  'no-await-in-loop': 'off',
+  'import-x/no-unresolved': 'off',
+  'import-x/no-extraneous-dependencies': ['error', {
+    devDependencies: true,
+  }],
+};
+
 export default [
+  {
+    ignores: ['out/**', 'node_modules/**', '.config/eslint.config.mjs'],
+  },
   js.configs.recommended,
   importX.flatConfigs.recommended,
   jsdoc.configs['flat/recommended'],
@@ -17,7 +35,7 @@ export default [
     braceStyle: '1tbs',
   }),
   {
-    files: ['src/**/*.js'],
+    files: ['src/**/*.js', '.config/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -39,20 +57,18 @@ export default [
         },
       },
     },
-    rules: {
-      'jsdoc/require-returns': 'off',
-      'jsdoc/require-returns-description': 'off',
-      'jsdoc/require-param-description': 'off',
-      'jsdoc/require-jsdoc': 'off',
-      strict: ['error', 'safe'],
-      '@stylistic/linebreak-style': 'off',
-      'no-restricted-syntax': 'off',
-      'no-await-in-loop': 'off',
-      'import-x/no-unresolved': 'off',
-      'import-x/no-extraneous-dependencies': ['error', {
-        devDependencies: true,
-      }],
+    rules: sharedRules,
+  },
+  {
+    files: ['.config/**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.node,
+      },
     },
+    rules: sharedRules,
   },
   {
     files: ['src/**/*.cjs'],
@@ -64,19 +80,6 @@ export default [
         ...globals.browser,
       },
     },
-    rules: {
-      'jsdoc/require-returns': 'off',
-      'jsdoc/require-returns-description': 'off',
-      'jsdoc/require-param-description': 'off',
-      'jsdoc/require-jsdoc': 'off',
-      strict: ['error', 'safe'],
-      '@stylistic/linebreak-style': 'off',
-      'no-restricted-syntax': 'off',
-      'no-await-in-loop': 'off',
-      'import-x/no-unresolved': 'off',
-      'import-x/no-extraneous-dependencies': ['error', {
-        devDependencies: true,
-      }],
-    },
+    rules: sharedRules,
   },
 ];

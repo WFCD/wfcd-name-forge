@@ -5,18 +5,28 @@
   "description": "A simple Electron app to make Warframe names",
   "main": "src/index.js",
   "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WFCD/wfcd-name-forge.git"
+  },
   "scripts": {
     "start": "npx electron-forge start",
     "package": "npx electron-forge package",
     "make": "npx electron-forge make",
     "publish": "npx electron-forge publish",
-    "lint": "npx eslint src --color --config .config/eslint.config.mjs",
-    "lint:fix": "npx eslint src --color --fix --config .config/eslint.config.mjs",
-    "pinact": "pinact -c .config/pinact.yaml run"
+    "lint": "npx eslint src .config --color --config .config/eslint.config.mjs",
+    "lint:fix": "npx eslint src .config --color --fix --config .config/eslint.config.mjs",
+    "pinact": "pinact -c .config/pinact.yaml run",
+    "prepare": "husky",
+    "release": "npx semantic-release"
   },
   "keywords": [],
   "author": "TobiTenno",
   "license": "MIT",
+  "release": {
+    "extends": "./.config/release.config.js"
+  },
   "config": {
     "forge": "./.config/forge.config.js"
   },
@@ -38,17 +48,23 @@
     "warframe-name-generator": "^2.0.12"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
     "@electron-forge/cli": "^7.11.2",
     "@electron-forge/maker-deb": "^7.11.2",
     "@electron-forge/maker-rpm": "^7.11.2",
     "@electron-forge/maker-squirrel": "^7.11.2",
     "@electron-forge/maker-zip": "^7.11.2",
     "@eslint/js": "^10.0.1",
+    "@semantic-release/exec": "^7.1.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "electron": "^44.0.0",
     "eslint": "^10.9.1",
     "eslint-plugin-import-x": "^4.17.1",
     "eslint-plugin-jsdoc": "^64.3.2",
-    "globals": "^17.0.0"
+    "globals": "^17.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.4.1",
+    "semantic-release": "^25.0.9"
   }
 }
