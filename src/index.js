@@ -1,14 +1,16 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { app, BrowserWindow, shell } = require('electron');
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import squirrelStartup from 'electron-squirrel-startup';
+import * as remote from '@electron/remote/main/index.js';
+import Generator from 'warframe-name-generator';
 
-// eslint-disable-next-line global-require
-if (require('electron-squirrel-startup')) {
+if (squirrelStartup) {
   app.quit();
 }
 
-const remote = require('@electron/remote/main');
-
 remote.initialize();
+
+const generator = new Generator();
+ipcMain.handle('generate-name', (_event, opts) => generator.make(opts));
 
 let mainWindow;
 
@@ -18,6 +20,7 @@ const createWindow = () => {
     width: 800,
     height: 535,
     frame: false,
+    roundedCorners: false,
     resizable: false,
     titleBarStyle: 'customButtonsOnHover',
     webPreferences: {
@@ -40,6 +43,7 @@ const createWindow = () => {
   });
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
+    return { action: 'deny' };
   });
   mainWindow.setMenu(null);
 };
