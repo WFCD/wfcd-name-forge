@@ -21,7 +21,7 @@ const sharedRules = {
 
 export default [
   {
-    ignores: ['out/**', 'node_modules/**', '.config/eslint.config.mjs'],
+    ignores: ['out/**', 'node_modules/**', 'test-results/**', 'playwright-report/**', '.config/eslint.config.mjs'],
   },
   js.configs.recommended,
   importX.flatConfigs.recommended,
@@ -35,7 +35,7 @@ export default [
     braceStyle: '1tbs',
   }),
   {
-    files: ['src/**/*.js', '.config/**/*.js'],
+    files: ['src/**/*.js', '.config/**/*.js', 'test/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

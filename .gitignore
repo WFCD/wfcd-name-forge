@@ -3,4 +3,7 @@ out
 .sonarlint/
 .idea/
 .eslintcache
+test-results
+playwright-report
+blob-report
 

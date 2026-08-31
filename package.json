@@ -15,11 +15,12 @@
     "package": "npx electron-forge package",
     "make": "npx electron-forge make",
     "publish": "npx electron-forge publish",
-    "lint": "npx eslint src .config --color --config .config/eslint.config.mjs",
-    "lint:fix": "npx eslint src .config --color --fix --config .config/eslint.config.mjs",
+    "lint": "npx eslint src .config test --color --config .config/eslint.config.mjs",
+    "lint:fix": "npx eslint src .config test --color --fix --config .config/eslint.config.mjs",
     "pinact": "pinact -c .config/pinact.yaml run",
     "prepare": "husky",
-    "release": "npx semantic-release"
+    "release": "npx semantic-release",
+    "test": "xvfb-maybe npx playwright test --config .config/playwright.config.js"
   },
   "keywords": [],
   "author": "TobiTenno",
@@ -56,6 +57,7 @@
     "@electron-forge/maker-squirrel": "^7.11.2",
     "@electron-forge/maker-zip": "^7.11.2",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
     "@semantic-release/exec": "^7.1.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "electron": "^44.0.0",
@@ -65,6 +67,7 @@
     "globals": "^17.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.4.1",
-    "semantic-release": "^25.0.9"
+    "semantic-release": "^25.0.9",
+    "xvfb-maybe": "^0.2.1"
   }
 }
