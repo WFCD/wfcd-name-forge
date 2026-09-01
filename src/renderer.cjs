@@ -5,7 +5,7 @@
 // All of the Node.js APIs are available in this process.
 
 const { ipcRenderer } = require('electron');
-require('materialize-css');
+require('@materializecss/materialize');
 const remote = require('@electron/remote');
 
 const getSelectValue = (formId) => {
