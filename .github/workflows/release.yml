@@ -90,9 +90,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: npm
-      - name: Install Linux packaging tools
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y fakeroot rpm
       - run: npm ci
       - name: Set release version
         shell: bash
@@ -109,9 +106,8 @@ jobs:
           while IFS= read -r -d '' file; do
             set -- "$@" "$file"
           done < <(find out/make -type f \( \
-            -name '*.exe' -o -name '*.deb' -o -name '*.rpm' -o \
-            -name '*.zip' -o -name '*.nupkg' -o -name '*.dmg' -o \
-            -name 'RELEASES' \
+            -name '*.exe' -o -name '*.zip' -o -name '*.nupkg' -o \
+            -name '*.dmg' -o -name 'RELEASES' \
           \) -print0)
 
           if [ "$#" -eq 0 ]; then
