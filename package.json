@@ -58,7 +58,7 @@
     "@playwright/test": "^1.62.1",
     "@semantic-release/exec": "^7.1.0",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "electron": "^44.0.0",
+    "electron": "^44.9.3",
     "eslint": "^10.9.1",
     "eslint-plugin-import-x": "^4.17.1",
     "eslint-plugin-jsdoc": "^64.3.2",
